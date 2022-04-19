@@ -8,6 +8,7 @@
     let selectAlbum = document.querySelector("#selectAlbum");
     let allTemplates = document.querySelector("#allTemplates");
     let overlay = document.querySelector("#overlay");
+    let playOverlay = document.querySelector("#play-overlay");
     let contentDetailsOverlay = document.querySelector("#content-details-overlay");
     let newSlide = document.querySelector("#new-slide");
     let createSlide = document.querySelector("#create-slide");
@@ -33,7 +34,37 @@
     });
 
     uploadFile.addEventListener("change", handleImportAlbum);
+    playAlbum.addEventListener("click",handlePlayAlbum);
+ function handlePlayAlbum()
+ { if(selectAlbum.value == "-1"){
+    alert("Select an album to play");
+    return;
+}
+playOverlay.style.display="block";
+playOverlay.querySelector("#text").innerHTML= "Playing album..";
 
+let album=albums.find(a=> a.name==selectAlbum.value);
+let counter=album.slides.length;
+let i=0;
+let id=setInterval(function()
+{
+    if(i<counter)
+    {
+        slideList.children[i].click();
+        playOverlay.querySelector("#text").innerHTML="Showing Slide" + ( i+1);  
+         i++;
+     }
+     else if(i==counter)
+     {
+         clearInterval(id);
+         playOverlay.style.display="none";
+     }
+
+     
+},500);
+
+
+ }
     function handleAddAlbum(){
         let albumName = prompt("Enter a name for the new album");
         if(albumName == null){
